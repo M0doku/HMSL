@@ -10,7 +10,7 @@ HMSL - Программа для запуска приложений.
 2. После можете отфильтровать игры по алфавиту и запускать кнопкой Launch Game.
 Если нужно удалить выбранную игру(к примеру изменился путь игры, либо она была удалена), необходимо выделить ее в списке и нажать Reset current app. Если нужно удалить все игры, нажмите Reset apps.
 Также можно открыть папку игры (Open Folder) и скрыть обложку игры (Hide Image).
--
+
 How to use?
 1. Click Find Apps and select the folders that contain the games.
 2. After that, you can filter the games alphabetically and launch them with the Launch Game button.
