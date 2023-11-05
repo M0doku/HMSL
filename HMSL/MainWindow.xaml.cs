@@ -269,10 +269,11 @@ namespace HMSL
                         processStartInfo.RedirectStandardError = false;
                         processStartInfo.RedirectStandardOutput = false;
                         processStartInfo.ArgumentList.Add("explorer.exe");
-                        processStartInfo.ArgumentList.Add("ModernWarfare.exe");
+                        processStartInfo.ArgumentList.Add("bootstrapper.exe");
                         processStartInfo.ArgumentList.Add("-uid");
                         processStartInfo.ArgumentList.Add("odin");
-                        Process.Start(processStartInfo);    
+                        Process.Start(processStartInfo);
+                        MessageBox.Show("22");
                     }
                     else if(((App_list.SelectedItem as Item).Name) == "Resident Evil 2 Remake")
                     {
@@ -287,11 +288,20 @@ namespace HMSL
                         
                         Process.Start(processStartInfo);
                     }
+                    
                     else
                     {
                         processStartInfo.Verb = "runas";
                         processStartInfo.WorkingDirectory = pathFolder;
-                        Process.Start(processStartInfo);
+                        try
+                        {
+                            Process.Start(processStartInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Not found file of application", "Error");
+                        }
+                       
                     }
                 }
                 else
@@ -299,6 +309,7 @@ namespace HMSL
                     MessageBox.Show("Not found path of application.", "Error");
                 }
             }
+           
             else
             { 
                 MessageBox.Show("Not found path of application.", "Error");

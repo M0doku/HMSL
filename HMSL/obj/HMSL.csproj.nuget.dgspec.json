@@ -1,31 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\HMSL.csproj": {}
+    "D:\\Modoku_29_09\\Projects\\HMSL\\HMSL\\HMSL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\HMSL.csproj": {
+    "D:\\Modoku_29_09\\Projects\\HMSL\\HMSL\\HMSL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\HMSL.csproj",
+        "projectUniqueName": "D:\\Modoku_29_09\\Projects\\HMSL\\HMSL\\HMSL.csproj",
         "projectName": "HMSL",
-        "projectPath": "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\HMSL.csproj",
-        "packagesPath": "C:\\Users\\Modoku\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\obj\\",
+        "projectPath": "D:\\Modoku_29_09\\Projects\\HMSL\\HMSL\\HMSL.csproj",
+        "packagesPath": "C:\\Users\\danll\\.nuget\\packages\\",
+        "outputPath": "D:\\Modoku_29_09\\Projects\\HMSL\\HMSL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Modoku\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\danll\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net6.0-windows7.0"
+          "net6.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -59,7 +60,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -71,7 +73,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }

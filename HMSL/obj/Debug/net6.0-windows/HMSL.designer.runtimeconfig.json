@@ -12,8 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\Modoku\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Modoku\\.nuget\\packages",
+      "C:\\Users\\danll\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\danll\\.nuget\\packages",
       "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
     ],
     "configProperties": {
