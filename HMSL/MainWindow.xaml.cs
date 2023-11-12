@@ -27,8 +27,9 @@ namespace HMSL
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {       
-        string connectionString;
+    {
+		string appDirectory = Environment.CurrentDirectory;
+		string connectionString;
         string updateConnection;
         string resetConnection;
         ObservableCollection<Item> app_names;
@@ -41,7 +42,9 @@ namespace HMSL
         Sorted sort_app = new Sorted() { IsSorted = false};
         public MainWindow()
         {
-            Uri iconUri = new Uri("icon.ico", UriKind.RelativeOrAbsolute);
+			
+			AppDomain.CurrentDomain.SetData("DataDirectory", appDirectory);
+			Uri iconUri = new Uri("icon.ico", UriKind.RelativeOrAbsolute);
             this.Icon = BitmapFrame.Create(iconUri);
             InitializeComponent();
             App_list.Foreground = Brushes.Red;
@@ -51,12 +54,15 @@ namespace HMSL
             {
             };
             App_list.ItemsSource = app_names;
-
+            
+            Debug.WriteLine(appDirectory);
             App_list.DisplayMemberPath = "Name";
             App_list.SelectedValuePath = "Path_pic";
-            connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            updateConnection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            resetConnection = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            string conString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + appDirectory + @"\Database1.mdf;Integrated Security=True";
+
+            connectionString = conString;
+            updateConnection = conString;
+            resetConnection = conString;
             
         }
         [Serializable] // Индикация для сохранения данных в app_names после выхода
@@ -148,92 +154,101 @@ namespace HMSL
             {
                 ///
                 SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            string? app_name = "";
-            string? app_id = "";
-            string query = "SELECT * from App_Table";
-            string? app_FileName = "";
-            string? app_image = "";
-            string? app_FullPath = "";
-            string? app_IsEnabled = "";
-            string? app_background = "";
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = connection;
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = query;
-            cmd.Parameters.AddWithValue("@App_name", app_name);
-            cmd.Parameters.AddWithValue("@ID", app_id);
-            cmd.Parameters.AddWithValue("@App_FileName", app_FileName);
-            cmd.Parameters.AddWithValue("@App_image", app_image);
-            cmd.Parameters.AddWithValue("@App_FullPath", app_FullPath);
-            cmd.Parameters.AddWithValue("@App_IsEnabled", app_IsEnabled);
-            cmd.Parameters.AddWithValue("@App_Background", app_background);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {   
-                    app_name = reader["App_name"].ToString();
-                    app_id = reader["ID"].ToString();
-                    app_FileName = reader["App_FileName"].ToString();
-                    app_image = reader["App_image"].ToString();
-                    app_FullPath = reader["App_FullPath"].ToString();
-                    app_IsEnabled = reader["App_IsEnabled"].ToString();
-                    app_background = reader["App_Background"].ToString();
-                    test.Text += app_IsEnabled;
-                    foreach (string folders in app.FileNames)
-                    {
-                         try
-                            {
-                                files = Directory.GetFiles(folders, "*.exe", SearchOption.AllDirectories);                              
-                            }
-                            catch(Exception ex) { }
+            bool databaseExists = File.Exists($@"{appDirectory}\Database1.mdf");
+            if(databaseExists == true)
+            {
+					connection.Open();
+					string? app_name = "";
+					string? app_id = "";
+					string query = "SELECT * from App_Table";
+					string? app_FileName = "";
+					string? app_image = "";
+					string? app_FullPath = "";
+					string? app_IsEnabled = "";
+					string? app_background = "";
+					SqlCommand cmd = new SqlCommand();
+					cmd.Connection = connection;
+					cmd.CommandType = CommandType.Text;
+					cmd.CommandText = query;
+					cmd.Parameters.AddWithValue("@App_name", app_name);
+					cmd.Parameters.AddWithValue("@ID", app_id);
+					cmd.Parameters.AddWithValue("@App_FileName", app_FileName);
+					cmd.Parameters.AddWithValue("@App_image", app_image);
+					cmd.Parameters.AddWithValue("@App_FullPath", app_FullPath);
+					cmd.Parameters.AddWithValue("@App_IsEnabled", app_IsEnabled);
+					cmd.Parameters.AddWithValue("@App_Background", app_background);
+					SqlDataReader reader = cmd.ExecuteReader();
+					while (reader.Read())
+					{
+						app_name = reader["App_name"].ToString();
+						app_id = reader["ID"].ToString();
+						app_FileName = reader["App_FileName"].ToString();
+						app_image = reader["App_image"].ToString();
+						app_FullPath = reader["App_FullPath"].ToString();
+						app_IsEnabled = reader["App_IsEnabled"].ToString();
+						app_background = reader["App_Background"].ToString();
+						test.Text += app_IsEnabled;
+						foreach (string folders in app.FileNames)
+						{
+							try
+							{
+								files = Directory.GetFiles(folders, "*.exe", SearchOption.AllDirectories);
+							}
+							catch (Exception ex) { }
 
-                        if (files != null)
-                        {
-                            foreach (string file in files)
-                            {
-                                app_FullPath = file;
-                                if (System.IO.Path.GetFileName(file) == reader["App_FileName"].ToString())
-                                {
-                                    if (app_IsEnabled == "false")
-                                    {
-                                        app_IsEnabled = "true";
-                                        SqlConnection update_connection = new SqlConnection(updateConnection);
-                                        update_connection.Open();
-                                        //string sql = @"UPDATE App_Table SET App_IsEnabled = '" + app_IsEnabled + "'" + "' WHERE ID = '" + app_id + "'";
-                                        string sql = @"UPDATE App_Table SET App_IsEnabled = @app_IsEnabled WHERE App_name = @app_name";
-                                        SqlCommand cmd_update = new SqlCommand();
-                                        cmd_update.Parameters.AddWithValue("@App_IsEnabled", app_IsEnabled);
-                                        cmd_update.Parameters.AddWithValue("@App_name", app_name);
-                                        cmd_update.CommandText = sql;
-                                        cmd_update.Connection = update_connection;
-                                        cmd_update.CommandType = CommandType.Text;
-                                        SqlDataReader update_reader = cmd_update.ExecuteReader();
-                                        app_names.Add(new Item()
-                                        {
-                                            Name = app_name,
-                                            ID = app_id,
-                                            Path_app = app_FileName,
-                                            Path_pic = app_image,
-                                            Full_path = app_FullPath,
-                                            IsEnabled = app_IsEnabled,
-                                            Background_pic = app_background
-                                        });
-                                        if (sort_app.IsSorted == true)
-                                        {
-                                            App_list.ItemsSource = app_names.OrderBy(c => c.Name);
-                                        }
-                                        else
-                                        {
-                                            App_list.ItemsSource = app_names;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                    }                  
-                }
-            }                                  
+							if (files != null)
+							{
+								foreach (string file in files)
+								{
+									app_FullPath = file;
+									if (System.IO.Path.GetFileName(file) == reader["App_FileName"].ToString())
+									{
+										if (app_IsEnabled == "false")
+										{
+											app_IsEnabled = "true";
+											SqlConnection update_connection = new SqlConnection(updateConnection);
+											update_connection.Open();
+											//string sql = @"UPDATE App_Table SET App_IsEnabled = '" + app_IsEnabled + "'" + "' WHERE ID = '" + app_id + "'";
+											string sql = @"UPDATE App_Table SET App_IsEnabled = @app_IsEnabled WHERE App_name = @app_name";
+											SqlCommand cmd_update = new SqlCommand();
+											cmd_update.Parameters.AddWithValue("@App_IsEnabled", app_IsEnabled);
+											cmd_update.Parameters.AddWithValue("@App_name", app_name);
+											cmd_update.CommandText = sql;
+											cmd_update.Connection = update_connection;
+											cmd_update.CommandType = CommandType.Text;
+											SqlDataReader update_reader = cmd_update.ExecuteReader();
+											app_names.Add(new Item()
+											{
+												Name = app_name,
+												ID = app_id,
+												Path_app = app_FileName,
+												Path_pic = app_image,
+												Full_path = app_FullPath,
+												IsEnabled = app_IsEnabled,
+												Background_pic = app_background
+											});
+											if (sort_app.IsSorted == true)
+											{
+												App_list.ItemsSource = app_names.OrderBy(c => c.Name);
+											}
+											else
+											{
+												App_list.ItemsSource = app_names;
+											}
+										}
+									}
+								}
+							}
+
+						}
+					}
+				}
+            else if(databaseExists == false)
+                {                    
+					MessageBox.Show(this,"Database not found. Try to restart program.", "Error");
+				}
+			}
+           
         }
         private void App_launch_Click(object sender, RoutedEventArgs e)
         {
@@ -269,10 +284,11 @@ namespace HMSL
                         processStartInfo.RedirectStandardError = false;
                         processStartInfo.RedirectStandardOutput = false;
                         processStartInfo.ArgumentList.Add("explorer.exe");
-                        processStartInfo.ArgumentList.Add("ModernWarfare.exe");
+                        processStartInfo.ArgumentList.Add("bootstrapper.exe");
                         processStartInfo.ArgumentList.Add("-uid");
                         processStartInfo.ArgumentList.Add("odin");
-                        Process.Start(processStartInfo);    
+                        Process.Start(processStartInfo);
+                        MessageBox.Show("22");
                     }
                     else if(((App_list.SelectedItem as Item).Name) == "Resident Evil 2 Remake")
                     {
@@ -287,11 +303,20 @@ namespace HMSL
                         
                         Process.Start(processStartInfo);
                     }
+                    
                     else
                     {
                         processStartInfo.Verb = "runas";
                         processStartInfo.WorkingDirectory = pathFolder;
-                        Process.Start(processStartInfo);
+                        try
+                        {
+                            Process.Start(processStartInfo);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Not found file of application", "Error");
+                        }
+                       
                     }
                 }
                 else
@@ -299,6 +324,7 @@ namespace HMSL
                     MessageBox.Show("Not found path of application.", "Error");
                 }
             }
+           
             else
             { 
                 MessageBox.Show("Not found path of application.", "Error");

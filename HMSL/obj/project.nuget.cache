@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WQ6U4bTavAJJvxjHh5nf3iDxsUwOdbuefFl+0+1A+TWrcXPcNGyUZbsnGo78gj7/6QKviB5M8GuWeIakH92+EQ==",
+  "dgSpecHash": "g/TeTYDJlCV1H8nvDXusStXYpUizqswHjhvklo+EfEbN5y9E6VlPC2WjHXcRWW5UL0bxBVE+cH6uSEL+5rHrTw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Modoku\\Projects\\HMSL\\HMSL\\HMSL.csproj",
+  "projectFilePath": "D:\\Modoku_29_09\\HMSL\\HMSL\\HMSL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Modoku\\.nuget\\packages\\microsoft-windowsapicodepack-core\\1.1.4\\microsoft-windowsapicodepack-core.1.1.4.nupkg.sha512",
     "C:\\Users\\Modoku\\.nuget\\packages\\microsoft-windowsapicodepack-shell\\1.1.4\\microsoft-windowsapicodepack-shell.1.1.4.nupkg.sha512",
